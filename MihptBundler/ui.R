@@ -15,7 +15,7 @@ shinyUI(pageWithSidebar(
                  c(Comma=',',
                    Semicolon=';',
                    Tab='\t'),
-                 'Comma'),
+                 'Tab'),
     radioButtons('quote', 'Text Quote',
                  c(None='',
                    'Double Quote'='"',
@@ -30,7 +30,7 @@ shinyUI(pageWithSidebar(
     h3(textOutput("Showing content of first designated file")),
     tabsetPanel(
       tabPanel("Original File", tableOutput('contents')),
-      tabPanel("Surfer Format", 
+      tabPanel("Bundled Download", 
                downloadButton('dlTransformedData', 'Download'),
                tableOutput('transformedContents'))
     )

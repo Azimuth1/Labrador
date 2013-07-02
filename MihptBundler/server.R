@@ -17,8 +17,13 @@ shinyServer(function(input, output) {
   })
   
   output$transformedContents <- renderTable({
-    
-    full_data <- ldply(input$files[[,'datapath']], read.table, header=input$header, sep=input$sep)
+    prepMihpt<-function(x){
+      
+      
+      
+    }
+
+    full_data <- ldply(input$files[,'datapath'], read.table, header=input$header, sep=input$sep)
     full_data
     
   })
