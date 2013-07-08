@@ -9,19 +9,21 @@ shinyUI(pageWithSidebar(
     tags$hr(),
     
     numericInput('toplines','Lines to skip at the top of the file',0,min=0),
-    checkboxInput('header', 'Header', TRUE),
+    checkboxInput('header', 'Is there a header row?', TRUE),
     #numericInput('rownamz','Which column holds the row IDs?',1,min=0),
-    textInput('nas','How are null values coded?',"ND"),
+    textInput('nas','How are null values coded?',"n/a"),
     radioButtons('sep', 'Field Separator',
                  c(Comma=',',
                    Semicolon=';',
                    Tab='\t'),
-                 'Comma'),
+                 'Tab'),
     radioButtons('quote', 'Text Quote',
                  c(None='',
                    'Double Quote'='"',
                    'Single Quote'="'"),
                  'Double Quote')
+    
+    
     
   ),
   
