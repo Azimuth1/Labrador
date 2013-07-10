@@ -4,7 +4,7 @@ shinyUI(pageWithSidebar(
   headerPanel("Labrador - Get MAX response out of MiHPT logs"),
   
   sidebarPanel(
-    fileInput('files', "Choose your MiHPT data files (.mhp)", multiple=TRUE),
+    fileInput('files', "Choose your MiHPT data files (.mhp, .zip)", multiple=TRUE),
     
     tags$hr(),
     
