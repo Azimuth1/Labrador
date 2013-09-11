@@ -29,7 +29,7 @@ shinyServer(function(input, output) {
   output$transformedContents <- renderTable({
     maxes()
   })
-
+ 
   output$dlTransformedData <- downloadHandler(
     filename="MaxMiHPT.csv",
     content = function(file){
