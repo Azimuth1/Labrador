@@ -28,10 +28,11 @@ Output Format:
 
 <div id="drop">Drag an XLSX file here to import to Labrador</div>
 <p><input type="file" name="xlfile" id="xlf" /> ... or click here to select a file</p>
-Advanced Options: <br />
-Use Web Workers: (when available) <input type="hidden" name="useworker" checked><br />
-Use Transferrables: (when available) <input type="hidden" name="xferable" checked><br />
-Use readAsBinaryString: (when available) <input type="hidden" name="userabs" checked><br />
+
+<input type="hidden" name="useworker" checked><br />
+<input type="hidden" name="xferable" checked><br />
+<input type="hidden" name="userabs" checked><br />
+
 <pre id="out"></pre>
 <br />
 <!-- uncomment the next line here and in xlsxworker.js for encoding support -->
@@ -145,19 +146,6 @@ function to_csv(workbook) {
 			result.push("SHEET: " + sheetName);
 			result.push("");
 			result.push(csv);
-		}
-	});
-	return result.join("\n");
-}
-
-function to_formulae(workbook) {
-	var result = [];
-	workbook.SheetNames.forEach(function(sheetName) {
-		var formulae = XLSX.utils.get_formulae(workbook.Sheets[sheetName]);
-		if(formulae.length > 0){
-			result.push("SHEET: " + sheetName);
-			result.push("");
-			result.push(formulae.join("\n"));
 		}
 	});
 	return result.join("\n");
