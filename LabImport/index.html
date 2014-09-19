@@ -12,6 +12,7 @@
 	padding:25px;
 	text-align:center;
 	font:20pt bold,"Vollkorn";color:#bbb
+	width: 600px;
 }
 #b64data{
 	width:100%;
@@ -27,10 +28,10 @@ Output Format:
 
 <div id="drop">Drag an XLSX file here to import to Labrador</div>
 <p><input type="file" name="xlfile" id="xlf" /> ... or click here to select a file</p>
-Advanced Demo Options: <br />
-Use Web Workers: (when available) <input type="checkbox" name="useworker" checked><br />
-Use Transferrables: (when available) <input type="checkbox" name="xferable" checked><br />
-Use readAsBinaryString: (when available) <input type="checkbox" name="userabs" checked><br />
+Advanced Options: <br />
+Use Web Workers: (when available) <input type="hidden" name="useworker" checked><br />
+Use Transferrables: (when available) <input type="hidden" name="xferable" checked><br />
+Use readAsBinaryString: (when available) <input type="hidden" name="userabs" checked><br />
 <pre id="out"></pre>
 <br />
 <!-- uncomment the next line here and in xlsxworker.js for encoding support -->
