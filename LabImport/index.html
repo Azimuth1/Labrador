@@ -3,6 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>Labrador Data Import</title>
+<LINK REL=StyleSheet HREF="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" TYPE="text/css" MEDIA=screen>
 <style>
 #drop{
 	border:2px dashed #bbb;
@@ -35,12 +36,15 @@ Output Format:
 <input type="hidden" name="userabs" checked><br />
 
 <pre id="out"></pre>
+<div id="map"></div>
 <br />
 <!-- uncomment the next line here and in xlsxworker.js for encoding support -->
 <!--<script src="//cdnjs.cloudflare.com/ajax/libs/xlsx/0.7.10/cpexcel.js"></script>-->
 <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/xlsx/0.7.10/jszip.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/xlsx/0.7.10/xlsx.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
+
 
 <script>
 var rABS = typeof FileReader !== "undefined" && typeof FileReader.prototype !== "undefined" && typeof FileReader.prototype.readAsBinaryString !== "undefined";
@@ -152,6 +156,15 @@ function to_csv(workbook) {
 	return result.join("\n");
 }
 
+
+
+
+
+
+
+
+
+
 function to_map(workbook) {
 	var result = [];
 	workbook.SheetNames.forEach(function(sheetName) {
@@ -165,6 +178,15 @@ function to_map(workbook) {
 	});
 	return result.join("\n");
 }
+
+
+
+
+
+
+
+
+
 
 var tarea = document.getElementById('b64data');
 function b64it() {
