@@ -1,6 +1,8 @@
 Labrador
 ========
 
+[ ![Codeship Status for Azimuth1/Labrador](https://codeship.io/projects/b5b0cee0-21ca-0132-3162-1ec6e6e8060f/status)](https://codeship.io/projects/36348)
+
 Environmental lab data analysis
 
 
