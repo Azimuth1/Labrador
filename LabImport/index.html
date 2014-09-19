@@ -202,7 +202,7 @@ function process_wb(wb) {
 			output = to_formulae(wb);
 			break;
 		case "map":
-			output = to_map(wb);
+			output = JSON.stringify(to_map(wb), 2, 2);
 			break;
 		default:
 		output = to_csv(wb);
