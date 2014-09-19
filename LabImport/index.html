@@ -167,10 +167,12 @@ function to_csv(workbook) {
 
 function to_map(workbook) {
 	var result = {};
-	var roa = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[0]);
-	if(roa.length > 0){
-		result[sheetName] = roa;
-	}
+	workbook.SheetNames.forEach(function(sheetName) {
+		var roa = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+		if(roa.length > 0){
+			result[sheetName] = roa;
+		}
+	});
 	return result;
 }
 
