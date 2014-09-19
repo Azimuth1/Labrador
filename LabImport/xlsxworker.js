@@ -3,7 +3,7 @@
 /* uncomment the next line for encoding support */
 //importScripts('dist/cpexcel.js');
 importScripts('//cdnjs.cloudflare.com/ajax/libs/xlsx/0.7.10/jszip.js');
-importScripts('//cdnjs.cloudflare.com/ajax/libs/xlsx/0.7.10/xlsx.min.js');
+importScripts('//cdnjs.cloudflare.com/ajax/libs/xlsx/0.7.10/xlsx.js');
 postMessage({t:"ready"});
 
 onmessage = function (oEvent) {
