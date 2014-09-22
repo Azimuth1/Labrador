@@ -1,0 +1,99 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="An online platform for reporting, analyzing, and visualizing environmental data.">
+  <meta name="author" content="Azimuth1, LLC">
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/leaflet-dvf/0.2/css/dvf.css" />
+  <link rel="stylesheet" href="/css/labstyle.css" >
+<script type="text/javascript" src="globals.js"></script>
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.2/css/smoothness/jquery-ui-1.10.2.custom.min.css" />
+  <link rel="stylesheet" href="/css/style.css"/>
+  <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+  <!--[if lt IE 9]>
+<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+
+  </head>
+  <body>
+    <div class="navbar navbar-inverse">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar">
+            </span>
+            <span class="icon-bar">
+            </span>
+            <span class="icon-bar">
+            </span>
+          </a>
+          <img src="http://www.beacon-usa.com/images/BElogo.gif.png" width=180 class="img-rounded"> 
+          <a href="#labModal" role="button" class="btn btn-inverse" data-toggle="modal">
+              <i class="fa fa-flask text-success"></i> Configure lab data
+          </a>
+       </div><!-- container fluid -->
+      </div><!-- navabar-inner  -->
+     </div><!-- navbar -->
+     <div id="map" style="overflow:hidden;"></div>
+
+<!-- Labs modal -->
+<div id="labModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick='show_loading_layer(); refresh_compound_layers(); updateChemicals(); console.log("updated");'>
+      x
+    </button>
+    <h4 id="myModalLabel">
+         Select which compounds to display:
+    </h4>
+  </div> <!-- modal header -->
+  <div class="modal-body">
+    <p>
+      <form id="chemical-filter-form" action="filter_chemicals.php" method="post">
+	  <a href="#" onclick='$(".chemical-filters").attr("checked", "checked"); '>Select ALL</a>  |
+	  <a href="#" onclick='$(".chemical-filters").removeAttr("checked"); '>Select NONE</a>
+      </form>
+    </p>
+    <br>
+  </div><!-- modal body -->
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true" onclick='show_loading_layer(); refresh_compound_layers(); updateChemicals(); console.log("updated");'>
+      Close
+    </button>
+  </div><!-- modal footer -->
+</div> <!-- end lab modal -->
+
+
+<div class="loading_modal">
+<center>
+<span>Updating selected lab results...
+</span>
+</center>
+</div><!--loading modal-->
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script> 
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.11/d3.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+<script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
+<script type="text/javascript" src="includes/heatmap.js-2.0/build/heatmap.min.js"></script>
+<script type="text/javascript" src="includes/heatmap.js-2.0/plugins/leaflet-heatmap.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-dvf/0.2/leaflet-dvf.min.js"></script>
+<script type="text/javascript" src="BeaconPoints.geojson"></script>
+<script type="text/javascript" src="maps.js"></script>
+<script type="text/javascript" src="/includes/application2.js"></script>
+
+</body>
+
+</html>
+
