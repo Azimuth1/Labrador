@@ -98,6 +98,7 @@ $(document).ready(function () {
                 sum += val;
             }
         }
+        console.log([lat, lng, sum]);
         return [lat, lng, sum];
     });
  
