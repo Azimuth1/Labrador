@@ -53,6 +53,16 @@ $(document).ready(function() {
         maxZoom: 22,
         maxNativeZoom: 17
     });
+
+    var baseLayer = L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
+        attribution: 'Azimuth1',
+        //maxZoom: 22,
+        maxNativeZoom: 17,
+        id:'jasondalton.map-7z4qef6u'
+    });
+
+
+
     geojson2heat = function(geojson, options) {
         options = options || {};
         var heat = geojson.features.map(function(d) {
@@ -124,6 +134,8 @@ $(document).ready(function() {
     });
     map.addLayer(beaconPoints);
     layerControl.addOverlay(beaconPoints, 'Beacon survey points');
+
+
     var savedSettings = {};
     //New CoxcombCharts for labs
     loadLabDataRingCharts = function(geojson, options1) {
@@ -274,10 +286,12 @@ $(document).ready(function() {
             }
             $("#chemical-filter-form").append($("<label>").text(compound_name).prepend($("<input>").attr('type', 'checkbox').val(compound_name).attr('id', compound_name).attr('class', 'chemical-filters')));
         });
+
         //setup_chemical_filter_form();
         //loadLabDataRingCharts(labdata, {
         //    layerLabel: 'Soil Gas2 Lab Results'
         //});
+    var heat = L.heatLayer(geojson2heat(labdata), {radius: 40}).addTo(map);
     });
 }); //end doc ready.
 
