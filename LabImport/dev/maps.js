@@ -275,9 +275,9 @@ $(document).ready(function() {
             $("#chemical-filter-form").append($("<label>").text(compound_name).prepend($("<input>").attr('type', 'checkbox').val(compound_name).attr('id', compound_name).attr('class', 'chemical-filters')));
         });
         //setup_chemical_filter_form();
-        loadLabDataRingCharts(labdata, {
-            layerLabel: 'Soil Gas2 Lab Results'
-        });
+        //loadLabDataRingCharts(labdata, {
+        //    layerLabel: 'Soil Gas2 Lab Results'
+        //});
     });
 }); //end doc ready.
 
