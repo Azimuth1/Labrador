@@ -73,11 +73,11 @@ $(document).ready(function () {
     //   (there will always be a red spot with useLocalExtremas true)
     "useLocalExtrema": true,
     // which field name in your data represents the latitude - default "lat"
-    latField: 'Y',
+    latField: 'lat',
     // which field name in your data represents the longitude - default "lng"
-    lngField: 'X',
+    lngField: 'lon',
     // which field name in your data represents the data value - default "value"
-    valueField: 'Value'
+    valueField: 'sum'
   };
 
   var geojson2heat = function(geojson, options) {
@@ -111,7 +111,8 @@ $(document).ready(function () {
 };
 
   var heatmapLayer = new HeatmapOverlay(cfg);
-
+  heatmapLayer.setData(geojson2heat(labdata));
+  
   map = new L.Map('map', {
     attributionControl: false,
     center: new L.LatLng(-12.654, -38.305),
@@ -119,7 +120,7 @@ $(document).ready(function () {
     layers: [baseLayer, heatmapLayer]
   });
 
-   baseLayer.addTo(map);
+   //baseLayer.addTo(map);
 
 
     var resize = function () {
