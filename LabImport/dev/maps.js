@@ -328,7 +328,7 @@ savedSettings.colorScale=colorScale;
     jQuery.getJSON("fxn/labDepthRange3.php", function (data) {
         labdata = data;
         setup_chemical_filter_form();
-        loadLabDataRingCharts(labdata,{layerLabel:'Soil Gas2 Lab Results'});
+        //loadLabDataRingCharts(labdata,{layerLabel:'Soil Gas2 Lab Results'});
     });
 
 
