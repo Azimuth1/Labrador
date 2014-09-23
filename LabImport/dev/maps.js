@@ -61,24 +61,6 @@ $(document).ready(function () {
     });
 
 
-  var cfg = {
-    // radius should be small ONLY if scaleRadius is true (or small radius is intended)
-    // if scaleRadius is false it will be the constant radius used in pixels
-    "radius": 5,
-    "maxOpacity": .8, 
-    // scales the radius based on map zoom
-    "scaleRadius": true, 
-    // if set to false the heatmap uses the global maximum for colorization
-    // if activated: uses the data maximum within the current map boundaries 
-    //   (there will always be a red spot with useLocalExtremas true)
-    "useLocalExtrema": true,
-    // which field name in your data represents the latitude - default "lat"
-    latField: 'lat',
-    // which field name in your data represents the longitude - default "lng"
-    lngField: 'lng',
-    // which field name in your data represents the data value - default "value"
-    valueField: 'sum'
-  };
 
   geojson2heat = function(geojson, options) {
     options = options || {};
@@ -99,7 +81,7 @@ $(document).ready(function () {
             }
         }
       
-    if(sum > 0){return "[{lat: "+lat+", lng: "+lng+ ", sum: "+sum+"}]"};
+    return [lat, lng, sum];
     });
  
     //filter if you don't want 0 values included. Not sure if it makes a difference
@@ -112,14 +94,12 @@ $(document).ready(function () {
     return heat;
   };
 
-  heatmapLayer = new HeatmapOverlay(cfg);
 
-  
   map = new L.Map('map', {
     attributionControl: false,
     center: new L.LatLng(-12.654, -38.305),
     zoom: 17,
-    layers: [baseLayer, heatmapLayer]
+    layers: [baseLayer]
   });
 
    //baseLayer.addTo(map);
@@ -145,9 +125,6 @@ $(document).ready(function () {
         attribution: 'Azimuth1',
         maxZoom: 22
     });
-
-    //streetLayer.addTo(map);
-
 
     layerControl = L.control.layers({
         'Street map background': streetLayer,
