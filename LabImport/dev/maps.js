@@ -333,7 +333,6 @@ savedSettings.colorScale=colorScale;
                 if (hasLab) {
                     map.addLayer(LabLayer);
                 }
-                heatmapLayer.setData(geojson2heat(data));
            });
         });
     }
