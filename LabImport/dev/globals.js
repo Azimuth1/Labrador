@@ -33,6 +33,7 @@ var updateChemicals;
             map.removeLayer(LabLayer);
             loadLabDataRingCharts(data,{layerLabel:'Soil Gas Lab Results'});
             map.addLayer(LabLayer);
+            heatmapLayer.setData(geojson2heat(data));
             hide_loading_layer();
         });
   }
