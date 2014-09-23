@@ -288,7 +288,7 @@ $(document).ready(function() {
         //loadLabDataRingCharts(labdata, {
         //    layerLabel: 'Soil Gas2 Lab Results'
         //});
-    var heat = L.heatLayer(geojson2heat(labdata), {radius: 40}).addTo(map);
+    heat = L.heatLayer(geojson2heat(labdata), {radius: 100, maxZoom: 22}).addTo(map);
     });
 }); //end doc ready.
 
