@@ -3,6 +3,7 @@ var labdata;
 var LabLayer;
 var layerControl;
 var max_depth=500;
+var heatmapLayer;
 /*
 var loadLabDataRingCharts;
 var show_loading_layer;
