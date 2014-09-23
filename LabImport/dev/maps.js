@@ -2,58 +2,48 @@ function isNumber(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
 }
 
-function readablize(val, unit) {
-    if (!isNumber(val)) {
-        return val;
-    }
-    if (val < 1000) {
-        return val + ' ' + unit;
-    }
-    var s = [', ', 'K ', 'M ', 'B ', 'T '];
-    var e = Math.floor(Math.log(val) / Math.log(1000));
-    return (val / Math.pow(1000, e)).toFixed(2) + " " + s[e] + unit;
-}
-$(document).ready(function() {
-    var l0to500kRadius = new L.LinearFunction(new L.Point(0, 4), new L.Point(10, 6));
-    var l500to1mRadius = new L.LinearFunction(new L.Point(10, 6), new L.Point(100, 10));
-    var l1mTo5mRadius = new L.LinearFunction(new L.Point(100, 10), new L.Point(1000, 14));
-    var l5mPlusRadius = new L.LinearFunction(new L.Point(1000, 14), new L.Point(100000000, 18));
-    var labRadius = new L.PiecewiseFunction([l0to500kRadius, l500to1mRadius, l1mTo5mRadius, l5mPlusRadius]);
-    var logRadius = function(value) {
-        return (Math.log(value + 1) / Math.LN10) / 2; //Add 1 to value to prevent returning negative values for values (0-1)
-    }
-    var labColorFunction = function(value) {
-        var color;
-        if (isNumber(value)) {
-            switch (true) {
-                case (value > 100000):
-                    color = "#FF0000"; //red
-                    break;
-                case (value > 10000):
-                    color = "#8B4513"; //brown
-                    break;
-                case (value > 1000):
-                    color = "#FF7F24"; //orange
-                    break;
-                case (value > 100):
-                    color = "#CDAD00"; //gold
-                    break;
-                case (value > 10):
-                    color = "#FFD700"; //yellow
-                    break;
-                default:
-                    color = "#AAAAAA"; //grey
+var heatL
+
+
+
+
+
+geojson2heat = function(geojson, options) {
+
+//tt();return
+
+        addHeat = function(data) {//a=data;data.max=100
+            var cfg = {
+                // radius should be small ONLY if scaleRadius is true (or small radius is intended)
+                // if scaleRadius is false it will be the constant radius used in pixels
+                // a waterdrop gradient ;-)
+// radius should be small ONLY if scaleRadius is true (or small radius is intended)
+  // if scaleRadius is false it will be the constant radius used in pixels
+  "radius": 40,
+  "maxOpacity": .8, 
+  // scales the radius based on map zoom
+  "scaleRadius": true, 
+  // if set to false the heatmap uses the global maximum for colorization
+  // if activated: uses the data maximum within the current map boundaries 
+  //   (there will always be a red spot with useLocalExtremas true)
+  "useLocalExtrema": false,
+                // which field name in your data represents the latitude - default "lat"
+                latField: 'lat',
+                // which field name in your data represents the longitude - default "lng"
+                lngField: 'lng',
+                // which field name in your data represents the data value - default "value"
+                valueField: 'count'
             };
-            return color;
+            console.log(data);
+            heatL = new HeatmapOverlay(cfg);
+            map.addLayer(heatL);
+            //data.data=[data.data.splice(0,5)]
+
+            heatL.setData(data);
+            
+
+
         };
-        return "#AAAAAA";
-    };
-    var baseLayer = L.tileLayer('https://{s}.tiles.mapbox.com/v3/jasondalton.map-7z4qef6u/{z}/{x}/{y}.png', {
-        attribution: 'Azimuth1',
-        maxZoom: 22,
-        maxNativeZoom: 17
-    });
-    geojson2heat = function(geojson, options) {
         options = options || {};
         var heat = geojson.features.map(function(d) {
             var lng = d.geometry.coordinates[0];
@@ -70,7 +60,20 @@ $(document).ready(function() {
                     sum += val;
                 }
             }
-            return [lat, lng, sum];
+
+
+                    if(sum>100){
+            sum=Math.floor(Math.random(4)*100);
+        }
+
+
+
+            return {
+                lat: lat,
+                lng: lng,
+                count: sum,
+                //radius:40
+            };
         });
         //filter if you don't want 0 values included. Not sure if it makes a difference
         if (options.filter) {
@@ -78,54 +81,35 @@ $(document).ready(function() {
                 return array[2] !== 0;
             });
         }
-        return heat;
-    };
-    map = new L.Map('map', {
-        attributionControl: false,
-        center: new L.LatLng(-12.654, -38.305),
-        zoom: 17,
-        layers: [baseLayer]
-    });
-    //baseLayer.addTo(map);
-    var resize = function() {
-        var $map = $('#map');
-        $map.height($(parent).height() - 70);
-        if (map) {
-            map.invalidateSize();
-        }
-    };
-    $(window).on('resize', function() {
-        resize();
-    });
-    resize();
-    var streetLayer = L.tileLayer('https://{s}.tiles.mapbox.com/v3/jasondalton.h4gh1idp/{z}/{x}/{y}.png', {
-        attribution: 'Azimuth1',
-        maxZoom: 22
-    });
-    layerControl = L.control.layers({
-        'Street map background': streetLayer,
-        'Custom imagery background': baseLayer
-    }).addTo(map);
-    var marker;
-    var layer;
-    var littleTriangle = L.icon({
-        iconUrl: 'blutri.png',
-        opacity: 0.7,
-        iconSize: [12, 12], // size of the icon
-        iconAnchor: [6, 6], // point of the icon which will correspond to marker's location
-        popupAnchor: [0, 6] // point from which the popup should open relative to the iconAnchor
-    });
-    var beaconPoints = L.geoJson(beaconPts, {
-        pointToLayer: function(feature, latlng) {
-            return L.marker(latlng, {
-                icon: littleTriangle
+
+        minmax = d3.extent(heat, function(d) {return d.count;});
+
+
+
+
+        //var max = minmax[1]>100 ? Math.floor(Math.random(4)*100) : minmax[1];
+        //return {max:max,data:heat};
+        addHeat({
+                max: minmax[1],
+                min:minmax[0],
+                data: heat
             });
-        }
-    });
-    map.addLayer(beaconPoints);
-    layerControl.addOverlay(beaconPoints, 'Beacon survey points');
-    var savedSettings = {};
-    //New CoxcombCharts for labs
+            //return heat;
+    };
+
+
+function readablize(val, unit) {
+    if (!isNumber(val)) {
+        return val;
+    }
+    if (val < 1000) {
+        return val + ' ' + unit;
+    }
+    var s = [', ', 'K ', 'M ', 'B ', 'T '];
+    var e = Math.floor(Math.log(val) / Math.log(1000));
+    return (val / Math.pow(1000, e)).toFixed(2) + " " + s[e] + unit;
+}
+
     loadLabDataRingCharts = function(geojson, options1) {
         testName = geojson;
         //if(!geojson){return}
@@ -262,6 +246,117 @@ $(document).ready(function() {
             });
         });
     }
+
+    var logRadius = function(value) {
+        return (Math.log(value + 1) / Math.LN10) / 2; //Add 1 to value to prevent returning negative values for values (0-1)
+    }
+    var labColorFunction = function(value) {
+        var color;
+        if (isNumber(value)) {
+            switch (true) {
+                case (value > 100000):
+                    color = "#FF0000"; //red
+                    break;
+                case (value > 10000):
+                    color = "#8B4513"; //brown
+                    break;
+                case (value > 1000):
+                    color = "#FF7F24"; //orange
+                    break;
+                case (value > 100):
+                    color = "#CDAD00"; //gold
+                    break;
+                case (value > 10):
+                    color = "#FFD700"; //yellow
+                    break;
+                default:
+                    color = "#AAAAAA"; //grey
+            };
+            return color;
+        };
+        return "#AAAAAA";
+    };
+
+
+    var baseLayer = L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
+        attribution: 'Azimuth1',
+        maxZoom: 22,
+        maxNativeZoom: 17,
+        id:'jasondalton.map-7z4qef6u'
+    });
+
+
+    var streetLayer = L.tileLayer('https://{s}.tiles.mapbox.com/v3/jasondalton.h4gh1idp/{z}/{x}/{y}.png', {
+        attribution: 'Azimuth1',
+        maxZoom: 22
+    });
+
+
+
+$(document).ready(function() {
+    var l0to500kRadius = new L.LinearFunction(new L.Point(0, 4), new L.Point(10, 6));
+    var l500to1mRadius = new L.LinearFunction(new L.Point(10, 6), new L.Point(100, 10));
+    var l1mTo5mRadius = new L.LinearFunction(new L.Point(100, 10), new L.Point(1000, 14));
+    var l5mPlusRadius = new L.LinearFunction(new L.Point(1000, 14), new L.Point(100000000, 18));
+    var labRadius = new L.PiecewiseFunction([l0to500kRadius, l500to1mRadius, l1mTo5mRadius, l5mPlusRadius]);
+
+    /*map = new L.Map('map', {
+        attributionControl: false,
+        center: new L.LatLng(-12.654, -38.305),
+        zoom: 17,
+        layers: [baseLayer]
+    });*/
+
+    map = L.map('map');
+    map.setView([-12.654, -38.305], 15).addLayer(baseLayer);
+//map.setView([0,0], 15).addLayer(baseLayer);
+
+
+
+   
+    console.log(labdata)
+        // a=geojson2heat(labdata)
+        // var heat = L.heatLayer(geojson2heat(labdata), {radius: 150}).addTo(map);
+        //baseLayer.addTo(map);
+        var resize = function() {
+        var $map = $('#map');
+        $map.height($(parent).height() - 70);
+        if (map) {
+            map.invalidateSize();
+        }
+    };
+    $(window).on('resize', function() {
+        resize();
+    });
+    resize();
+
+
+    layerControl = L.control.layers({
+       // 'Street map background': streetLayer,
+        'Custom imagery background': baseLayer
+    }).addTo(map);
+    var marker;
+    var layer;
+    
+    var littleTriangle = L.icon({
+        iconUrl: 'blutri.png',
+        opacity: 0.7,
+        iconSize: [12, 12], // size of the icon
+        iconAnchor: [6, 6], // point of the icon which will correspond to marker's location
+        popupAnchor: [0, 6] // point from which the popup should open relative to the iconAnchor
+    });
+    var beaconPoints = L.geoJson(beaconPts, {
+        pointToLayer: function(feature, latlng) {
+            return L.marker(latlng, {
+                icon: littleTriangle
+            });
+        }
+    });
+    map.addLayer(beaconPoints);
+    layerControl.addOverlay(beaconPoints, 'Beacon survey points');
+    var savedSettings = {};
+    //New CoxcombCharts for labs
+
     jQuery.getJSON("fxn/labDepthRange3.php", function(data) {
         labdata = data;
         var compounds = _.chain(labdata.features).map(function(d) {
@@ -272,15 +367,16 @@ $(document).ready(function() {
             if ($("#" + compound_name).length >= 1) {
                 return;
             }
-            $("#chemical-filter-form").append($("<label>").text(compound_name).prepend($("<input>").attr('type', 'checkbox').val(compound_name).attr('id', compound_name).attr('class', 'chemical-filters')));
+            $("#chemical-filter-form").append($("<label>").text(compound_name).prepend($("<input>").attr('type', 'checkbox').val(compound_name).attr('id', compound_name).attr(
+                'class', 'chemical-filters')));
         });
         //setup_chemical_filter_form();
         loadLabDataRingCharts(labdata, {
             layerLabel: 'Soil Gas2 Lab Results'
         });
+    geojson2heat(labdata);
+      //var maxR = _.max(h,function(d){return d[2]})[2];
+      //heat = L.heatLayer(h, {radius:90,maxZoom:22}).addTo(map);
     });
+
 }); //end doc ready.
-
-
-
-
