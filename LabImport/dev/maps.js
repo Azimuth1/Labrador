@@ -90,7 +90,6 @@ $(document).ready(function () {
             return array[2] !== 0;
         });
     }
-    console.log(heat);
     return heat;
   };
 
