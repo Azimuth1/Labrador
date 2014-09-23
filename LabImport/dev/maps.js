@@ -111,7 +111,7 @@ $(document).ready(function () {
 };
 
   var heatmapLayer = new HeatmapOverlay(cfg);
-  heatmapLayer.setData(geojson2heat(labdata));
+
   
   map = new L.Map('map', {
     attributionControl: false,
@@ -333,6 +333,7 @@ savedSettings.colorScale=colorScale;
                 if (hasLab) {
                     map.addLayer(LabLayer);
                 }
+                heatmapLayer.setData(geojson2heat(data));
            });
         });
     }
