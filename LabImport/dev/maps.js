@@ -56,7 +56,10 @@ $(document).ready(function() {
         maxNativeZoom: 17,
         id:'jasondalton.map-7z4qef6u'
     });
-
+    var streetLayer = L.tileLayer('https://{s}.tiles.mapbox.com/v3/jasondalton.h4gh1idp/{z}/{x}/{y}.png', {
+        attribution: 'Azimuth1',
+        maxZoom: 22
+    });
 
 
     geojson2heat = function(geojson, options) {
@@ -90,8 +93,9 @@ $(document).ready(function() {
         attributionControl: false,
         center: new L.LatLng(-12.654, -38.305),
         zoom: 17,
-        layers: [baseLayer]
+        layers: [streetLayer]
     });
+
     //baseLayer.addTo(map);
     var resize = function() {
         var $map = $('#map');
@@ -104,13 +108,10 @@ $(document).ready(function() {
         resize();
     });
     resize();
-    var streetLayer = L.tileLayer('https://{s}.tiles.mapbox.com/v3/jasondalton.h4gh1idp/{z}/{x}/{y}.png', {
-        attribution: 'Azimuth1',
-        maxZoom: 22
-    });
+
     layerControl = L.control.layers({
-        'Street map background': streetLayer,
-        'Custom imagery background': baseLayer
+        'Custom imagery background': baseLayer,
+        'Street map background': streetLayer   
     }).addTo(map);
     var marker;
     var layer;
