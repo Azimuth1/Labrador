@@ -3,7 +3,6 @@ var labdata;
 var LabLayer;
 var layerControl;
 var max_depth=500;
-var heatmapLayer;
 /*
 var loadLabDataRingCharts;
 var show_loading_layer;
@@ -34,7 +33,7 @@ var updateChemicals;
             map.removeLayer(LabLayer);
             loadLabDataRingCharts(data,{layerLabel:'Soil Gas Lab Results'});
             map.addLayer(LabLayer);
-            heatmapLayer.setData(geojson2heat(data));
+            var heat = L.heatLayer(geojson2heat(data)).addTo(map);
             hide_loading_layer();
         });
   }
