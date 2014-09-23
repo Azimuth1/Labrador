@@ -111,7 +111,7 @@ $(document).ready(function () {
     return heat;
 };
 
-  var heatmapLayer = new HeatmapOverlay(cfg);
+  heatmapLayer = new HeatmapOverlay(cfg);
 
   
   map = new L.Map('map', {
