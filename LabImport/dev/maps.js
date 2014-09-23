@@ -52,7 +52,7 @@ $(document).ready(function() {
 
     var baseLayer = L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
         attribution: 'Azimuth1',
-        maxZoom: 22,
+        //maxZoom: 22,
         maxNativeZoom: 17,
         id:'jasondalton.map-7z4qef6u'
     });
