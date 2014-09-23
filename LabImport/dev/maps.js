@@ -64,7 +64,7 @@ $(document).ready(function () {
   var cfg = {
     // radius should be small ONLY if scaleRadius is true (or small radius is intended)
     // if scaleRadius is false it will be the constant radius used in pixels
-    "radius": 2,
+    "radius": 5,
     "maxOpacity": .8, 
     // scales the radius based on map zoom
     "scaleRadius": true, 
@@ -98,8 +98,7 @@ $(document).ready(function () {
                 sum += val;
             }
         }
-        console.log([lat, lng, sum]);
-        return [lat, lng, sum];
+    if(sum > 0){return "[{lat: "+lat+", lng: "+lng+ ", sum: "+sum+"}]"};
     });
  
     //filter if you don't want 0 values included. Not sure if it makes a difference
@@ -108,8 +107,9 @@ $(document).ready(function () {
             return array[2] !== 0;
         });
     }
+
     return heat;
-};
+  };
 
   heatmapLayer = new HeatmapOverlay(cfg);
 
