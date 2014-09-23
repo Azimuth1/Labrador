@@ -80,7 +80,7 @@ $(document).ready(function () {
     valueField: 'sum'
   };
 
-  var geojson2heat = function(geojson, options) {
+  geojson2heat = function(geojson, options) {
     options = options || {};
     var heat = geojson.features.map(function(d) {
         var lng = d.geometry.coordinates[0];
