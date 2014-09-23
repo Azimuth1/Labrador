@@ -98,6 +98,7 @@ $(document).ready(function () {
                 sum += val;
             }
         }
+      
     if(sum > 0){return "[{lat: "+lat+", lng: "+lng+ ", sum: "+sum+"}]"};
     });
  
@@ -107,7 +108,7 @@ $(document).ready(function () {
             return array[2] !== 0;
         });
     }
-
+    console.log(heat);
     return heat;
   };
 
