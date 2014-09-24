@@ -1,0 +1,19 @@
+{
+  "name": "Labrador",
+  "version": "0.0.0",
+  "description": "Environmental lab data analysis",
+  "main": "src/index.html",
+  "scripts": {
+    "test": "test/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Azimuth1/Labrador.git"
+  },
+  "author": "Azimuth1",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Azimuth1/Labrador/issues"
+  },
+  "homepage": "https://github.com/Azimuth1/Labrador"
+}
