@@ -82,7 +82,7 @@ var HeatmapOverlay = L.Layer.extend({
     var generatedData = { max: this._max, min: this._min };
     var latLngPoints = [];
     var radiusMultiplier = this.cfg.scaleRadius ? scale : 1;
-    console.log(radiusMultiplier)
+    //console.log(radiusMultiplier)
     var localMax = 0;
     var localMin = 0;
     var valueField = this.cfg.valueField;
@@ -113,7 +113,7 @@ var HeatmapOverlay = L.Layer.extend({
       } else {
         radius = (this.cfg.radius || 2) * radiusMultiplier;
       }
-      console.log(radius)
+      //console.log(radius)
       latlngPoint.radius = radius;
       latLngPoints.push(latlngPoint);
     }
