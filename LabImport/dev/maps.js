@@ -1,28 +1,14 @@
-
 function isNumber(n) {
     return val = parseFloat(n) ? true : false;
 }
-
 geojson2heat = function(geojson, options) {
     options = options || {};
-
-/*
-geojson=geojson.features.map(function(d) {
-    var compounds = d.properties.Compounds;
-    for (var key in compounds) {})
-});*/
-
-
-
-
-
     var heat = geojson.features.map(function(d) {
         var lng = d.geometry.coordinates[0];
         var lat = d.geometry.coordinates[1];
         var compounds = d.properties.Compounds;
         var sum = 0;
         for (var key in compounds) {
-            //console.log(compounds.key)
             //Convert val from string to numeric
             var number = compounds[key].replace(',', '');
             //If it's not a number, ignore it. If it is, we are good
@@ -37,12 +23,8 @@ geojson=geojson.features.map(function(d) {
             lat: lat,
             lng: lng,
             count: sum,
-            //radius:40
         };
     });
-
-
-
     //filter if you don't want 0 values included. Not sure if it makes a difference
     if (options.filter) {
         heat = heat.filter(function(array) {
@@ -52,8 +34,11 @@ geojson=geojson.features.map(function(d) {
     minmax = d3.extent(heat, function(d) {
         return d.count;
     });
-
-    return {max: minmax[1],min: minmax[0],data: heat};
+    return {
+        max: minmax[1],
+        min: minmax[0],
+        data: heat
+    };
 };
 
 function readablize(val, unit) {
@@ -67,18 +52,11 @@ function readablize(val, unit) {
     var e = Math.floor(Math.log(val) / Math.log(1000));
     return (val / Math.pow(1000, e)).toFixed(2) + " " + s[e] + unit;
 }
-
 loadLabDataRingCharts = function(geojson, options1) {
     //geojson.features.map(function(d){if(d.properties.Compounds['1,2,4-Trichlorobenzene']!=='<25'){console.log(d.properties.Compounds['1,2,4-Trichlorobenzene'])}});
     //geojson.features=geojson.features.filter(function(d){return d.properties.Compounds['1,2,4-Trichlorobenzene']!=='<25'});
     options1 = options1 || {};
-var labLayer = L.geoJson();
-
-
-
-
-
-
+    var labLayer = L.geoJson();
 
     function getKeys(data) {
         return _.chain(data.features).map(function(d) {
@@ -113,16 +91,15 @@ var labLayer = L.geoJson();
         var generateOptionsData = function(d) {
             var data = {};
             for (var key in d) {
-                var value = +d[key].replace(',','');
+                var value = +d[key].replace(',', '');
                 data[key] = isNumber(value) ? logRadius(value) : (value == 'ND') ? noData : 0;
             }
             return data;
         };
         var generateOptionsChartOptions = function(d) {
             colo = function(item, obj) {
-
                 if (isNaN(obj[key])) {
-                console.log(obj[key])
+                    //console.log(obj[key])
                     return '#818181';
                 }
                 return colorScale(item);
@@ -168,28 +145,17 @@ var labLayer = L.geoJson();
     var scale = options1.scale || [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1];
     var noData = options1.noData || scale[0];
     var colors = options1.colorScale || ["#8dd3c7", "#ffffb3", "#bebada", "#fb8072", "#80b1d3", "#fdb462", "#b3de69", "#d9d9d9", "#bc80bd", "#ccebc5", "#ffed6f"];
-    
     filterItems = [];
     $('.chemical-filters:checked').each(function(d, e) {
         filterItems.push(e.value);
     });
     if (filterItems.length) {
         geojson = filter(geojson, filterItems);
-
         var MaxLab = (savedSettings.MaxLab) ? savedSettings.MaxLab : getmaxValue(geojson);
         savedSettings.MaxLab = MaxLab;
         var colorScale = (savedSettings.colorScale) ? savedSettings.colorScale : d3.scale.ordinal().range(colors);
         savedSettings.colorScale = colorScale;
-
-
-
-
-L.geoJson(geojson, {
-    onEachFeature: function(feature, layer){layer.bindPopup(JSON.stringify(feature.properties.Compounds['1,2,4-Trichlorobenzene']));}
-}).addTo(map);
-
         geojson.features.forEach(function(data) {
-
             //a = [data.geometry.coordinates[1],data.geometry.coordinates[0]]
             //L.marker(a).addTo(map);
             marker = newMarker(data);
@@ -200,16 +166,13 @@ L.geoJson(geojson, {
             });
             labLayer.addLayer(marker);
         });
-        
-        return [labLayer,geojson];
+        return [labLayer, geojson];
     }
 };
-
-
 var logRadius = function(value) {
     return (Math.log(value + 1) / Math.LN10) / 2; //Add 1 to value to prevent returning negative values for values (0-1)
 };
-/*var labColorFunction = function(value) {
+var labColorFunction = function(value) {
     var color;
     if (isNumber(value)) {
         switch (true) {
@@ -234,7 +197,7 @@ var logRadius = function(value) {
         return color;
     };
     return "#AAAAAA";
-};*/
+};
 var baseLayer = L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
     attribution: 'Azimuth1',
     maxZoom: 22,
@@ -251,15 +214,12 @@ $(document).ready(function() {
     var l1mTo5mRadius = new L.LinearFunction(new L.Point(100, 10), new L.Point(1000, 14));
     var l5mPlusRadius = new L.LinearFunction(new L.Point(1000, 14), new L.Point(100000000, 18));
     var labRadius = new L.PiecewiseFunction([l0to500kRadius, l500to1mRadius, l1mTo5mRadius, l5mPlusRadius]);
-
     map = new L.Map('map', {
         attributionControl: false,
         center: new L.LatLng(-12.654, -38.305),
         zoom: 17,
-        layers: [baseLayer,streetLayer]
+        layers: [baseLayer, streetLayer]
     });
-
-
     var resize = function() {
         var $map = $('#map');
         $map.height($(parent).height() - 70);
@@ -271,11 +231,9 @@ $(document).ready(function() {
         resize();
     });
     resize();
-
     layerControl = L.control.layers({
         'Custom imagery background': baseLayer,
-        'Street map background': streetLayer   
-
+        'Street map background': streetLayer
     }).addTo(map);
     var marker;
     var layer;
@@ -295,9 +253,7 @@ $(document).ready(function() {
     });
     map.addLayer(beaconPoints);
     layerControl.addOverlay(beaconPoints, 'Beacon survey points');
-
-
-savedSettings = {};
+    savedSettings = {};
     //New CoxcombCharts for labs
     jQuery.getJSON("fxn/labDepthRange3.php", function(data) {
         labdata = data;
@@ -314,7 +270,5 @@ savedSettings = {};
         });
         //LabLayer = L.geoJson();
         //setup_chemical_filter_form();
-
-
     });
 }); //end doc ready.
