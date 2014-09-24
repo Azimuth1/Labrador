@@ -220,7 +220,9 @@ function setup_chemical_filter_form() {
             if (hasLab) {
                 map.addLayer(LabLayer);
             }
+
         });
+
     });
 }
 var logRadius = function(value) {
@@ -268,8 +270,15 @@ $(document).ready(function() {
     var l1mTo5mRadius = new L.LinearFunction(new L.Point(100, 10), new L.Point(1000, 14));
     var l5mPlusRadius = new L.LinearFunction(new L.Point(1000, 14), new L.Point(100000000, 18));
     var labRadius = new L.PiecewiseFunction([l0to500kRadius, l500to1mRadius, l1mTo5mRadius, l5mPlusRadius]);
-    map = L.map('map');
-    map.setView([-12.654, -38.305], 17).addLayer(baseLayer);
+
+    map = new L.Map('map', {
+        attributionControl: false,
+        center: new L.LatLng(-12.654, -38.305),
+        zoom: 17,
+        layers: [baseLayer,streetLayer]
+    });
+
+
     var resize = function() {
         var $map = $('#map');
         $map.height($(parent).height() - 70);
@@ -281,9 +290,11 @@ $(document).ready(function() {
         resize();
     });
     resize();
+
     layerControl = L.control.layers({
-        // 'Street map background': streetLayer,
-        'Custom imagery background': baseLayer
+        'Custom imagery background': baseLayer,
+        'Street map background': streetLayer   
+
     }).addTo(map);
     var marker;
     var layer;
@@ -303,6 +314,8 @@ $(document).ready(function() {
     });
     map.addLayer(beaconPoints);
     layerControl.addOverlay(beaconPoints, 'Beacon survey points');
+
+
     var savedSettings = {};
     //New CoxcombCharts for labs
     jQuery.getJSON("fxn/labDepthRange3.php", function(data) {
@@ -318,10 +331,13 @@ $(document).ready(function() {
             $("#chemical-filter-form").append($("<label>").text(compound_name).prepend($("<input>").attr('type', 'checkbox').val(compound_name).attr('id', compound_name).attr(
                 'class', 'chemical-filters')));
         });
+
         //setup_chemical_filter_form();
+
         loadLabDataRingCharts(labdata, {
             layerLabel: 'Soil Gas2 Lab Results'
         });
         geojson2heat(labdata);
+
     });
 }); //end doc ready.
