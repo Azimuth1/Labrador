@@ -1,20 +1,199 @@
-function updateChemicals() {
-    var selectedChemicals = '';
-    $('#chemical-filter-form input[type=checkbox]:checked').map(function() {
-        if (selectedChemicals != '') {
-            selectedChemicals = selectedChemicals + ', ';
-        }
-        selectedChemicals = selectedChemicals + this.value;
-    }).get()
-    $.ajax({
-        url: 'php/filter_chemicals.php',
-        type: 'post',
-        data: {
-            chemical_filters: selectedChemicals
-        },
-        success: function(data) {}
-    });
+_loadLabDataRingCharts = function(_geojson, options1) {
+
+if(typeof layerTracker == 'undefined' || !layerTracker){
+    layerTracker = [];
 }
+
+
+
+if(layerTracker.length){
+layerTracker.forEach(function(d,e){
+    layerControl.removeLayer(d);
+    map.removeLayer(d);
+    layerTracker = [];
+})
+
+}
+    var addLayer = function(geojson,options1,name) {
+        testName = geojson;
+        options1 = options1 || {};
+
+        function getKeys(data) {
+            return _.chain(data.features)
+                .map(function(d) {
+                    return _.keys(d.properties.Compounds);
+                })
+                .flatten()
+                .unique()
+                .sortBy()
+                .value();
+        }
+
+        function getmaxValue(data) {
+            return _.chain(data.features)
+                .map(function(d) {
+                    return +_.max(d.properties.Compounds,
+                        function(d) {
+                            return +d;
+                        });
+                })
+                .max()
+                .value();
+        }
+
+        function filter(d, filters) {
+            if (!filters.length) {
+                return d;
+            }
+            d.features.forEach(function(feature) {
+                var compounds = feature.properties.Compounds;
+                for (var key in compounds) {
+                    if (filters.indexOf(key) == -1) {
+                        delete compounds[key];
+                    }
+                }
+            });
+            return d;
+        }
+        var newMarker = function(feature) {
+            var compounds = feature.properties.Compounds;
+            var generateOptionsData = function(d) {
+                var data = {};
+                for (var key in d) {
+                    var value = +d[key];
+                    data[key] = isNumber(value) ? logRadius(
+                            value) : (value == 'ND') ? noData :
+                        0;
+                }
+                return data;
+            };
+            var generateOptionsChartOptions = function(d) {
+                colo = function(item, obj) {
+                    if (isNaN(obj[key])) {
+                        return '#818181';
+                    }
+                    return colorScale(item);
+                };
+                var data = {};
+                var radColors = {'Soil':'#614126','Water':'#0000ff','Vapor':'#00ff00','MW':'#ff0000'}
+                var radiusC = radColors[name] || '#fff';
+                for (var key in d) {
+                    var val = d[key];
+                    var obj = {};
+                    obj.fillColor = colo(key, d);
+                    obj.color = radiusC;
+                    obj['stroke-width']='10px';
+                    obj.minValue = 0;
+                    obj.maxValue = radius;
+                    obj.origValue = val;
+                    obj.displayText = function(value) {
+                        return readablize(this.orig[this.key],
+                            'ppb');
+                    };
+                    data[key] = obj;
+                }
+                return data;
+            };
+            var options = {
+                radius: radius,
+                fillOpacity: 0.8,
+                mouseOverExaggeration: 1,
+                opacity: 1,
+                color: '#fff',
+                'stroke-width':'10px',
+                weight: 1,
+                gradient: false,
+                dropShadow: false,
+            };
+            options.tooltipOptions = {
+                // iconSize: new L.Point(90, 76),
+                // iconAnchor: new L.Point(-4, 76)
+            };
+            options.data = generateOptionsData(compounds);
+            options.orig = compounds;
+            options.chartOptions = generateOptionsChartOptions(
+                compounds);
+            options.table = feature.properties;
+            var coords = [feature.geometry.coordinates[1], feature.geometry
+                .coordinates[0]];
+            return new L.CoxcombChartMarker(coords, options);
+        };
+        var radius = options1.radius || 600;
+        var scale = options1.scale || [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8,
+            0.9, 1];
+        var noData = options1.noData || scale[0];
+        var colors = options1.colorScale || ["#8dd3c7", "#ffffb3",
+            "#bebada", "#fb8072", "#80b1d3", "#fdb462", "#b3de69",
+            "#d9d9d9", "#bc80bd", "#ccebc5", "#ffed6f"];
+
+        var ctrlNames = {'Soil':'Soil Labs','Water':'Water Labs','Vapor':'Vapor Labs','MW':'Monitoring Wells'}
+        var layerLabel = ctrlNames[name] || 'Lab Results';
+
+
+
+        filterItems = [];
+        $('.chemical-filters:checked')
+            .each(function(d, e) {
+                filterItems.push(e.value)
+            })
+
+
+
+        LabLayer = L.geoJson();
+        if (filterItems.length) {
+            geojson = filter(geojson, filterItems);
+            var MaxLab = (savedSettings.MaxLab) ? savedSettings.MaxLab :
+                getmaxValue(geojson);
+            savedSettings.MaxLab = MaxLab;
+            var colorScale = (savedSettings.colorScale) ? savedSettings
+                .colorScale : d3.scale.ordinal()
+                .range(colors);
+            savedSettings.colorScale = colorScale;
+            //   var  x = (savedSettings.x) ? savedSettings.x :  linearBucket(geojson);
+            //savedSettings.x=x
+            geojson.features.forEach(function(data) {
+                marker = newMarker(data);
+                var $html = $(L.HTMLUtils.buildTable(marker.options
+                    .table));
+                marker.bindPopup($html.wrap('<div/>')
+                    .parent()
+                    .html(), {
+                        minWidth: 400,
+                        maxWidth: 400
+                    });
+                LabLayer.addLayer(marker);
+            });
+        }
+        layerTracker.push(LabLayer);
+        map.addLayer(LabLayer);
+        layerControl.addOverlay(LabLayer, layerLabel);
+        lastLayer = LabLayer;
+    };
+
+
+
+
+if(_geojson.features){addLayer(_geojson);}
+ 
+    _.each(_geojson, function(d,name) {
+        if(!d.features){return}
+        addLayer(d,options1,name)
+    })
+
+
+
+};
+
+
+
+
+
+
+
+
+
+
+
 
 function show_loading_layer(msg) {
     if (!msg) {
@@ -29,12 +208,32 @@ function hide_loading_layer() {
 }
 
 function refresh_compound_layers() {
-    jQuery.getJSON("php/labDepthRange3.php", function(data) {
+
+
+    jQuery.getJSON("../data/labDepthRange3.js", function(data) {
         hide_loading_layer();
-        var filteredData = loadLabDataRingCharts(data);
-        addLabLayer(filteredData);
-        addHeat(filteredData);
+        /*Water={"type":"FeatureCollection",features:_.sample(labdata.features,5)}
+        Soil={"type":"FeatureCollection",features:_.sample(labdata.features,5)}
+        Vapor={"type":"FeatureCollection",features:_.sample(labdata.features,10)}
+        MW={"type":"FeatureCollection",features:_.sample(labdata.features,10)}
+
+        test = {Water:Water,Soil:Soil,Vapor:Vapor,MW:MW};
+        //console.log(test)
+        _loadLabDataRingCharts(test);*/
+
+
+        var filteredData = _loadLabDataRingCharts(data);
+        //var filteredData = _loadLabDataRingCharts(data);
+        //console.log(filteredData);
+        //addLabLayer(filteredData);
+        //addHeat(filteredData);
     });
+
+
+
+
+
+
 }
 
 function addLabLayer(filteredData) {

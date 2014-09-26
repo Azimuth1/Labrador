@@ -1,4 +1,6 @@
-
+path{
+  stroke-width:2px;
+}
  @media (max-width: 767px) {
       body {
         padding-left: 0px;

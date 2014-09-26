@@ -9,7 +9,6 @@ var max_depth = 500;
 d3.select('.modalFilter').on('click', function() {
     show_loading_layer();
     refresh_compound_layers();
-    updateChemicals();
     console.log("updated");
 })
 var baseLayer = L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
@@ -51,11 +50,17 @@ var beaconPoints = L.geoJson(beaconPts, {
 map.addLayer(beaconPoints);
 layerControl.addOverlay(beaconPoints, 'Beacon survey points');
 savedSettings = {};
-jQuery.getJSON("php/labDepthRange3.php", function(data) {
+
+console.log('b')
+jQuery.getJSON("../data/labDepthRange3.js", function(data) {console.log('!')
     labdata = data;
     var compounds = _.chain(labdata.features).map(function(d) {
         return _.keys(d.properties.Compounds);
     }).flatten().unique().sort().value();
+
+      var compounds = ["1,2,3,4-Tetrachlorobenzene", "1,2,3-Trichlorobenzene", "1,2,4,5-Tetrachlorobenzene", "1,2,4-Trichlorobenzene", "1,2-Dichlorobenzene", "1,2-Dichloroethane", "1,2-Dimethylbenzene"]
+
+    
     $.each(compounds, function() {
         compound_name = this.toString();
         if ($("#" + compound_name).length >= 1) {

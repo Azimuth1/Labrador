@@ -1,0 +1,122 @@
+
+EC PRE-LOG TESTS BYPASSED
+
+
+N044.zip
+
+SITE INFORMATION -- DIRECT IMAGE MIP+HPT PROBE
+
+Geoprobe DI Acquisition Software for Windows
+Version: 1.2   Build: 11349
+
+COMPANY: Columbia Technologies
+OPERATOR: RSP
+PROJECT ID: Dupont Camacari Phase 2
+CLIENT: CH2M Hill
+UNITS: METRIC
+PROBE AND ARRAY: MH6530 MiHPT Probe with Top Dipole
+100 INCH STRING POT USED
+ROD LENGTH: 5 feet
+
+
+
+MIP PRE-LOG RESPONSE TEST BYPASSED
+
+
+
+TRIP TIME: 52 sec
+
+
+
+PRE-LOG HPT REFERENCE TEST VALUES
+
+PRE TEST TIME: Thu Oct 24 2013 14:44:47
+
+PRE-LOG HPT REFERENCE TESTS BYPASSED
+
+DETECTOR NAME: PID FID XSD (none)
+HPT IDEAL COEFFS:       2.2696e1,-2.2356
+HPT SENSOR CAL NUMBERS: XD2260A,0.0000,0.0000,4.0000e-7,2.0000e-5,1.0183,-3.4290
+LOG START TIME: Thu Oct 24 2013 14:44:51
+
+
+MIP Pressure out of range (13.8 psi / 95 kPa) at 37.45 ft (11.415 m)
+
+ATTENUATION CHANGES
+DEPTH (ft)	DEPTH (m)	DET1	DET2	DET3	DET4
+      0.00	    0.000	   1	   1	   1	   1
+      7.90	    2.408	   1	   1	  10	   1
+     10.35	    3.155	   1	   1	   1	   1
+     33.20	   10.119	   1	   1	  10	   1
+LOG END DEPTH: 39.20 ft (11.948 m)
+LOG END TIME: Thu Oct 24 2013 16:11:45
+
+LATITUDE: 0.000000000
+LONGITUDE: 0.000000000
+ELEVATION: 0.000 METERS  0.00 FEET
+
+
+
+MIP POST-LOG RESPONSE TEST
+
+FILENAME: N044.post.tim
+COMPOUND: Chlorobenzene
+CONCENTRATION: Headspace ppm
+FLOW: 42 mL/min
+RESPONSE TEST START TIME: Thu Oct 24 2013 16:30:17
+
+RESPONSE TEST ATTENUATION CHANGES
+   TIME		DET1	DET2	DET3	DET4
+      0		   1	   1	   1	   1
+
+
+
+
+
+
+POST-LOG HPT REFERENCE TEST VALUES
+
+POST TEST TIME: Thu Oct 24 2013 16:33:40
+
+	TEST		HPT PRESSURE (psi)	FLOW (mL/min)	HPT PRESSURE (kPa)
+
+TOP with FLOW=0		 13.753			   0.0		  94.820
+TOP with FLOW>0		 14.111			 282.4		  97.290
+BOTTOM with FLOW=0	 13.531			   0.0		  93.290
+BOTTOM with FLOW>0	 13.890			 282.6		  95.770
+
+EXPECTED FLOW=0 HPT DIFF.: 0.22 psi (1.5 kPa) +/- 10%
+  ACTUAL FLOW=0 HPT DIFF.: 0.22 psi (1.5 kPa)
+
+TRANSDUCER TEST PASSED
+
+
+Post-Log EC Load Tests
+
+Test 	Target (mS/m)	Actual (mS/m)	% Diff	P/F
+ Low	     55.0    	     66.7    	  21.3	FAIL
+High	    290.0    	    311.7    	   7.5	PASS
+
+
+Post-Log EC Troubleshooting Tests
+
+     Test 	   Value   	P/F
+
+Instrument Calibration Tests 
+  10 Ohms:	  10.0 Ohms	PASS
+ 100 Ohms:	  99.5 Ohms	PASS
+1000 Ohms:	1019.2 Ohms	PASS
+
+
+
+
+WARNING: ONE OR MORE EC TESTS FAILED, SO EC DATA FOR THIS LOG MAY BE UNRELIABLE
+
+
+********** USER NOTES **********
+
+Refusal at 12.  Weird pressure spike during run, dissappeared.
+
+2 dissipations.
+
+No pre-log as I thought it was saved on N044 (this is 44a, after a computer glitch required a restart)

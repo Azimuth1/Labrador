@@ -1,0 +1,105 @@
+
+Pre-Log EC Load Tests
+
+Test 	Target (mS/m)	Actual (mS/m)	% Diff	P/F
+ Low	     55.0    	     57.8    	   5.0	PASS
+High	    290.0    	    292.2    	   0.8	PASS
+
+
+
+N063.zip
+
+SITE INFORMATION -- DIRECT IMAGE MIP+HPT PROBE
+
+Geoprobe DI Acquisition Software for Windows
+Version: 1.2   Build: 11349
+
+COMPANY: Columbia Technologies
+OPERATOR: RSP
+PROJECT ID: Dupont Camacari Phase 2
+CLIENT: CH2M Hill
+UNITS: METRIC
+PROBE AND ARRAY: MH6530 MiHPT Probe with Top Dipole
+100 INCH STRING POT USED
+ROD LENGTH: 5 feet
+
+
+
+MIP PRE-LOG RESPONSE TEST
+
+FILENAME: N063.pre.tim
+COMPOUND: Chlorobenzene
+CONCENTRATION: Headspace ppm
+FLOW: 42 mL/min
+RESPONSE TEST START TIME: Mon Oct 14 2013 14:10:24
+
+RESPONSE TEST ATTENUATION CHANGES
+   TIME		DET1	DET2	DET3	DET4
+      0		   1	   1	   1	   1
+
+
+
+TRIP TIME: 56 sec
+
+
+
+PRE-LOG HPT REFERENCE TEST VALUES
+
+PRE TEST TIME: Mon Oct 14 2013 14:14:06
+
+	TEST		HPT PRESSURE (psi)	FLOW (mL/min)	HPT PRESSURE (kPa)
+
+TOP with FLOW=0		 13.701			   0.0		  94.470
+TOP with FLOW>0		 14.054			 274.1		  96.900
+BOTTOM with FLOW=0	 13.489			   0.0		  93.000
+BOTTOM with FLOW>0	 13.841			 276.4		  95.430
+
+EXPECTED FLOW=0 HPT DIFF.: 0.22 psi (1.5 kPa) +/- 10%
+  ACTUAL FLOW=0 HPT DIFF.: 0.21 psi (1.5 kPa)
+
+TRANSDUCER TEST PASSED
+
+
+
+DETECTOR NAME: PID FID XSD (none)
+HPT IDEAL COEFFS:       2.2696e1,-2.2356
+HPT SENSOR CAL NUMBERS: XD2260A,0.0000,0.0000,4.0000e-7,2.0000e-5,1.0183,-3.4290
+LOG START TIME: Mon Oct 14 2013 14:17:21
+
+ATTENUATION CHANGES
+DEPTH (ft)	DEPTH (m)	DET1	DET2	DET3	DET4
+      0.00	    0.000	   1	   1	   1	   1
+LOG END DEPTH: 26.80 ft (8.169 m)
+LOG END TIME: Mon Oct 14 2013 15:10:39
+
+LATITUDE: 0.000000000
+LONGITUDE: 0.000000000
+ELEVATION: 0.000 METERS  0.00 FEET
+
+
+
+MIP POST-LOG RESPONSE TEST BYPASSED
+
+
+
+
+
+
+POST-LOG HPT REFERENCE TEST VALUES
+
+POST TEST TIME: Mon Oct 14 2013 15:10:43
+
+POST-LOG HPT REFERENCE TESTS BYPASSED
+
+
+
+EC POST-LOG TESTS BYPASSED
+
+
+
+********** USER NOTES **********
+
+Refusal at 8.2
+Tried pulling up to 7.7, then could only get back to 8.0
+
+EC looks ragged, will check wires.

@@ -1,0 +1,140 @@
+
+Pre-Log EC Load Tests
+
+Test 	Target (mS/m)	Actual (mS/m)	% Diff	P/F
+ Low	     55.0    	     58.2    	   5.9	PASS
+High	    290.0    	    302.2    	   4.2	PASS
+
+
+
+N059.zip
+
+SITE INFORMATION -- DIRECT IMAGE MIP+HPT PROBE
+
+Geoprobe DI Acquisition Software for Windows
+Version: 1.2   Build: 11349
+
+COMPANY: Columbia Technologies
+OPERATOR: RSP
+PROJECT ID: Dupont Camacari Phase 2
+CLIENT: CH2M Hill
+UNITS: METRIC
+PROBE AND ARRAY: MH6530 MiHPT Probe with Top Dipole
+100 INCH STRING POT USED
+ROD LENGTH: 5 feet
+
+
+
+MIP PRE-LOG RESPONSE TEST
+
+FILENAME: N059.pre.tim
+COMPOUND: Chlorobenzene
+CONCENTRATION: Headspace ppm
+FLOW: 42 mL/min
+RESPONSE TEST START TIME: Wed Oct 23 2013 13:58:25
+
+RESPONSE TEST ATTENUATION CHANGES
+   TIME		DET1	DET2	DET3	DET4
+      0		   1	   1	   1	   1
+
+
+
+TRIP TIME: 52 sec
+
+
+
+PRE-LOG HPT REFERENCE TEST VALUES
+
+PRE TEST TIME: Wed Oct 23 2013 14:00:25
+
+	TEST		HPT PRESSURE (psi)	FLOW (mL/min)	HPT PRESSURE (kPa)
+
+TOP with FLOW=0		 13.838			   0.0		  95.410
+TOP with FLOW>0		 14.147			 283.3		  97.540
+BOTTOM with FLOW=0	 13.613			   0.0		  93.860
+BOTTOM with FLOW>0	 13.935			 283.7		  96.080
+
+EXPECTED FLOW=0 HPT DIFF.: 0.22 psi (1.5 kPa) +/- 10%
+  ACTUAL FLOW=0 HPT DIFF.: 0.23 psi (1.6 kPa)
+
+TRANSDUCER TEST PASSED
+
+
+
+DETECTOR NAME: PID FID XSD (none)
+HPT IDEAL COEFFS:       2.2696e1,-2.2356
+HPT SENSOR CAL NUMBERS: XD2260A,0.0000,0.0000,4.0000e-7,2.0000e-5,1.0183,-3.4290
+LOG START TIME: Wed Oct 23 2013 14:05:06
+
+ATTENUATION CHANGES
+DEPTH (ft)	DEPTH (m)	DET1	DET2	DET3	DET4
+      0.00	    0.000	   1	   1	   1	   1
+LOG END DEPTH: 34.10 ft (10.394 m)
+LOG END TIME: Wed Oct 23 2013 15:29:49
+
+LATITUDE: 0.000000000
+LONGITUDE: 0.000000000
+ELEVATION: 0.000 METERS  0.00 FEET
+
+
+
+MIP POST-LOG RESPONSE TEST
+
+FILENAME: N059.post.tim
+COMPOUND: Chlorobenzene
+CONCENTRATION: Headspace ppm
+FLOW: 42 mL/min
+RESPONSE TEST START TIME: Wed Oct 23 2013 15:43:25
+
+RESPONSE TEST ATTENUATION CHANGES
+   TIME		DET1	DET2	DET3	DET4
+      0		   1	   1	   1	   1
+
+
+
+
+
+
+POST-LOG HPT REFERENCE TEST VALUES
+
+POST TEST TIME: Wed Oct 23 2013 15:46:55
+
+	TEST		HPT PRESSURE (psi)	FLOW (mL/min)	HPT PRESSURE (kPa)
+
+TOP with FLOW=0		 13.727			   0.0		  94.650
+TOP with FLOW>0		 14.125			 280.7		  97.390
+BOTTOM with FLOW=0	 13.516			   0.0		  93.190
+BOTTOM with FLOW>0	 13.906			 280.6		  95.880
+
+EXPECTED FLOW=0 HPT DIFF.: 0.22 psi (1.5 kPa) +/- 10%
+  ACTUAL FLOW=0 HPT DIFF.: 0.21 psi (1.5 kPa)
+
+TRANSDUCER TEST PASSED
+
+
+Post-Log EC Load Tests
+
+Test 	Target (mS/m)	Actual (mS/m)	% Diff	P/F
+ Low	     55.0    	     60.7    	  10.4	FAIL
+High	    290.0    	    302.3    	   4.2	PASS
+
+
+Post-Log EC Troubleshooting Tests
+
+     Test 	   Value   	P/F
+
+Instrument Calibration Tests 
+  10 Ohms:	  10.1 Ohms	PASS
+ 100 Ohms:	 100.4 Ohms	PASS
+1000 Ohms:	1024.1 Ohms	PASS
+
+
+
+
+WARNING: ONE OR MORE EC TESTS FAILED, SO EC DATA FOR THIS LOG MAY BE UNRELIABLE
+
+
+********** USER NOTES **********
+
+2 dissipations, refusal at 10.4
+
