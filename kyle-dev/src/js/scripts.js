@@ -39,6 +39,16 @@ layerTracker.forEach(function(d,e){
                 })
                 .max()
                 .value();
+        layerVis = _.object(_.map(layerTracker.map(function(d, i) {
+                var s = ['Soil', 'Water', 'Vapor', 'MW'];
+                var obj = {};
+                return {
+                        name: s[i],
+                        exists: map.hasLayer(d)
+                };
+        }), function(x) {
+                return [x.name, x.exists];
+        }));
         }
 
         function filter(d, filters) {
