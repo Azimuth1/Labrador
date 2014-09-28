@@ -127,6 +127,9 @@ layerTracker.forEach(function(d,e){
             var coords = [feature.geometry.coordinates[1], feature.geometry
                 .coordinates[0]];
             return new L.CoxcombChartMarker(coords, options);
+                if (visible) {
+                        map.addLayer(LabLayer);
+                }
         };
         var radius = options1.radius || 600;
         var scale = options1.scale || [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8,
