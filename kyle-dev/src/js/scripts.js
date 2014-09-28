@@ -195,6 +195,10 @@ if(_geojson.features){addLayer(_geojson);}
 
 
 
+                var vis = layerVis[name] ? true : false;
+                if (!Object.keys(layerVis).length) {
+                        vis = true;
+                }
 };
 
 
