@@ -1,0 +1,64 @@
+/* -- Labrador Mk2 CSS -- */
+
+body {
+	font-family: sans-serif;
+}
+
+#import {
+	margin: 0 auto;
+	padding-top: 30px;
+  width: 80%;
+  height: 180px;
+  font-size: 18px;
+}
+
+#dragImport {
+	border: 2px dashed #bbb;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	padding: 25px;
+	text-align: center;
+	font: 18pt bold; color: #bbb;
+}
+
+#fileImport {
+  padding-top: 15px;
+  padding-left: 55px;
+  text-align: center;
+  font-size: 10pt;
+}
+
+#errorCheck {
+	margin: 0 auto;
+  width: 90%;
+  padding-bottom: 25px;
+}
+
+#viewer {
+	margin: 0 auto;
+  width: 90%;
+}
+
+#submit {
+	position: relative;
+  padding-left: 150px;
+  padding-top: 30px;
+  padding-bottom: 50px;
+}
+
+/* -- Table Style -- */
+
+.tg {
+	border-collapse: collapse;
+	border-spacing: 0;
+	width: 100%;
+}
+.tg th{
+	font-size: 15px;
+	padding: 10px 5px;
+	border-style: solid;
+	border-width: 1px;
+	font-weight: bold;
+	background-color: #efefef
+}

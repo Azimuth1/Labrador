@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='UTF-8'/>
+  <title>Labrador Mk2</title>
+  <!-- CSS -->
+  <link href="assets/css/labrador.css" rel="stylesheet" type="text/css">
+  <link href="assets/css/handsontable.full.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+<!-- FILE IMPORT -->
+<div id="import">
+	<div id="dragImport">Drag an XLSX or XLS file here to import.</div>
+	<div id="fileImport">Or select a file from your computer.&nbsp; <input type="file" name="xlfile" id="xlf"></div>
+</div>
+
+<!-- ERROR CHECK -->
+<div id="errorCheck">
+	<p>Ensure your data is formatted properly for upload, below are the required headers:</p>
+	<table class="tg">
+	  <tr>
+	    <th>SampleID</th>
+	    <th>SiteName</th>
+	    <th>StationName</th>
+	    <th>Date</th>
+	    <th>TopDepth</th>
+	    <th>BottomDepth</th>
+	    <th>Basis</th>
+	    <th>Matrix</th>
+	    <th>Compound</th>
+	    <th>Dilution</th>
+	    <th>Value</th>
+	    <th>Units</th>
+	  </tr>
+	</table>
+</div>
+
+<!-- FILE VIEW -->
+<div id="viewer"></div>
+
+<!-- FILE SUBMIT -->
+<div id="submit"><input type="submit" value="Upload Data" id="submitJSON" style="visibility:hidden;"></div>
+
+<!-- SheetJS Dependencies -->
+<script src="assets/js/shim.js"></script>
+<script src="assets/js/jszip.js"></script>
+<script src="assets/js/xlsx.js"></script>
+
+<!-- Handsontable Dependencies -->
+<script src="assets/js/jquery.js"></script>
+<script src="assets/js/handsontable.full.js"></script>
+
+
+<script>
+var X = XLSX;
+
+function fixdata(data) {
+	var o = "", l = 0, w = 10240;
+	for(; l<data.byteLength/w; ++l) o+=String.fromCharCode.apply(null,new Uint8Array(data.slice(l*w,l*w+w)));
+	o+=String.fromCharCode.apply(null, new Uint8Array(data.slice(l*w)));
+	return o;
+}
+
+function to_json(workbook) {
+	var result = {};
+	workbook.SheetNames.forEach(function(sheetName) {
+		var roa = X.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+		if(roa.length > 0){
+			result[sheetName] = roa;
+		}
+	});
+	return result;
+}
+
+function process_wb(wb) {
+	// Generate headers for HOT
+	var schema = {};
+	var headers = [];
+	var reg = /^\w[1]$/;
+	var wb_sheet = wb["Sheets"][wb.SheetNames[0]];
+	for(key in wb_sheet) {
+		if (key.match(reg)) {
+			var header = wb_sheet[key]['v'];
+			schema[header] = null;
+			headers.push(header);
+		}
+	}
+
+	// Convert the workbook (wb) from SheetJS to JSON for handsontable
+	var data = to_json(wb)[wb.SheetNames[0]];
+	
+	// Set up HOT object
+	var container = document.getElementById('viewer');
+	var hot = new Handsontable(container, {
+	  data: data,
+	  dataSchema: schema,
+	  colHeaders: headers,
+	  rowHeaders: false,
+	  contextMenu: true,
+	  stretchH: 'all'
+	});
+
+	// Make SUBMIT button visible
+	document.getElementById('submitJSON').style.visibility='visible';
+	var submitButton = document.getElementById('submitJSON');
+
+	// Submit data
+	submitButton.addEventListener('click', function() {
+		output = JSON.stringify(data);
+		$.ajax({
+			type: 'POST',
+			data: output,
+			dataType: 'json',
+			url: 'dataUpload.php',
+			success: function(data){
+			   alert('Items added');
+			},
+			error: function(e){
+			   console.log('e.message');
+			}
+		});
+	})
+}
+
+// Drag and drop input
+var drop = document.getElementById('dragImport');
+function handleDrop(e) {
+	e.stopPropagation();
+	e.preventDefault();
+	var files = e.dataTransfer.files;
+	var f = files[0];
+	{
+		var reader = new FileReader();
+		var name = f.name;
+		reader.onload = function(e) {
+			if(typeof console !== 'undefined') console.log("onload", new Date());
+			var data = e.target.result;
+			var wb;
+			var arr = fixdata(data);
+			wb = X.read(btoa(arr), {type: 'base64'});
+			process_wb(wb);
+		};
+		reader.readAsArrayBuffer(f);
+	}
+}
+
+function handleDragover(e) {
+	e.stopPropagation();
+	e.preventDefault();
+	e.dataTransfer.dropEffect = 'copy';
+}
+
+if(drop.addEventListener) {
+	drop.addEventListener('dragenter', handleDragover, false);
+	drop.addEventListener('dragover', handleDragover, false);
+	drop.addEventListener('drop', handleDrop, false);
+}
+
+// File menu input
+var xlf = document.getElementById('fileImport');
+function handleFile(e) {
+	var files = e.target.files;
+	var f = files[0];
+	{
+		var reader = new FileReader();
+		var name = f.name;
+		reader.onload = function(e) {
+			if(typeof console !== 'undefined') console.log("onload", new Date());
+			var data = e.target.result;
+			var wb;
+			var arr = fixdata(data);
+			wb = X.read(btoa(arr), {type: 'base64'});
+			process_wb(wb);
+		};
+		reader.readAsArrayBuffer(f);
+	}
+}
+
+if(xlf.addEventListener) xlf.addEventListener('change', handleFile, false);
+</script>
+
+</body>
+</html>
